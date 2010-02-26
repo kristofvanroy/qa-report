@@ -1,0 +1,4 @@
+name = "QA Report"
+description = "This is a module allows users to create issues inline on specific pages and it will automatically provide usefull metadata for debugging purposes"
+package = "QA"
+core = 6.x

@@ -1,0 +1,6 @@
+name = "QA Report Jira"
+description = "Extend the QA Report module with JIRA support"
+package = "QA"
+core = 6.x
+dependencies[] = "qa_report"
+dependencies[] = "jira_api"

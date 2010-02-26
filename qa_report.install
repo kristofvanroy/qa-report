@@ -1,0 +1,138 @@
+<?php
+
+/**
+ * Implementation of hook_install()
+ */
+function qa_report_install(){
+  drupal_install_schema('qa_report');
+}
+
+/**
+ * Implementation of hook_uninstall()
+ */
+function qa_report_uninstall(){
+  drupal_uninstall_schema('qa_report');
+}
+
+
+/**
+ * Implementation of hook_schema()
+ */
+function qa_report_schema(){
+  $schema['qa_report_tracking'] = array(
+    'fields' => array(
+      'sid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'pid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'count' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+      'first' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'last' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('sid', 'pid'),
+  );
+
+  $schema['qa_report_setups'] = array(
+    'fields' => array(
+      'sid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'browser' => array(
+        'type' => 'varchar',
+        'length' => '50',
+        'not null' => TRUE,
+      ),
+      'version' => array(
+        'type' => 'varchar',
+        'length' => '50',
+        'not null' => TRUE,
+      ),
+      'platform' => array(
+        'type' => 'varchar',
+        'length' => '50',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('sid', 'browser', 'version', 'platform'),
+  );
+
+  $schema['qa_report_paths'] = array(
+    'fields' => array(
+      'pid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'path' => array(
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+      ),
+      'status' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+    ),
+    'primary key' => array('pid', 'path'),
+  );
+
+  $schema['qa_report_issues'] = array(
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'pid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'sid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'description' => array(
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ),
+      'status' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+      'created' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('id', 'pid', 'sid', 'uid', 'status', 'created'),
+  );
+
+  return $schema;
+}

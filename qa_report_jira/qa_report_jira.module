@@ -1,0 +1,32 @@
+<?php
+
+function qa_report_jira_qr_operations($op, $args){
+
+  switch($op){
+    case 'create_issue':
+     $count = 0;
+
+    foreach($args['issues'] as $key => $value){
+      if($value){
+        $data = qa_report_get_issue($value);
+
+        $issue = new stdClass;
+        $issue->type =  1;
+        $issue->summary = truncate_utf8($data->description, 100, FALSE, TRUE);
+        $issue->description = $data->description;
+        $issue->environment = $data->browser .' '. $data->version .' '.$data->platform;
+        $issue->assignee = -1;
+
+        $jira = new Jira();
+        $jira = $jira->createIssue($issue);
+        if(!empty($jira)){
+          $count ++;
+        }
+      }
+    }
+    if($count){
+      drupal_set_message(t('Succesfully created @num issue(s) in JIRA', array('@num' => $count)));
+    }
+    break;
+  }
+}
